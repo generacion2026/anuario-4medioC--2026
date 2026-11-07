@@ -7,6 +7,14 @@
   <!-- Evita el error 404 de favicon.ico en la consola de GitHub Pages -->
   <link rel="icon" href="data:,">
   <style>
+    /* ===== MESA DE CORTE: cambia estos valores para personalizarla =====
+       --mesa-fondo: color de la mesa (verde por defecto; prueba #2f6fb3 para azul o #8a4f9e para morado)
+       Para quitar los lápices y demás objetos, borra los <div class="obj"> dentro de <div class="mesa"> (más abajo, en el <body>). */
+    :root {
+      --mesa-fondo: #3f8444;
+      --mesa-linea: 241, 236, 170; /* color de la cuadrícula, en formato R, G, B */
+    }
+
     * {
       box-sizing: border-box;
       margin: 0;
@@ -16,8 +24,7 @@
       height: 100%;
     }
     body {
-      background-color: #121212;
-      background-image: radial-gradient(circle at 50% 40%, #1f1f1f 0%, #0a0a0a 100%);
+      background-color: var(--mesa-fondo);
       display: flex;
       flex-direction: column;
       height: 100vh;
@@ -26,6 +33,79 @@
       overflow: hidden;
       user-select: none;
       -webkit-user-select: none;
+    }
+
+    /* ===== Mesa de corte realista ===== */
+    .mesa {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      background-color: var(--mesa-fondo);
+      --g: 120px; /* tamaño de cada cuadro grande; el script lo ajusta al tamaño de la pantalla */
+    }
+    .mesa .capa {
+      position: absolute;
+      inset: 0;
+    }
+    /* manchas claras y oscuras del plástico */
+    .mesa .manchas {
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc5MTEnIGhlaWdodD0nOTExJz48ZmlsdGVyIGlkPSdmJyBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9J3NSR0InIHg9JzAnIHk9JzAnIHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjAwNDIgMC4wMDYnIG51bU9jdGF2ZXM9JzQnIHNlZWQ9JzMnIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9JzAgMCAwIDAgMC4wNCAgMCAwIDAgMCAwLjE2ICAwIDAgMCAwIDAuMDUgIDIuNiAwIDAgMCAtMS4wNScvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNmKScvPjwvc3ZnPg=="), url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2NzMnIGhlaWdodD0nNjczJz48ZmlsdGVyIGlkPSdmJyBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9J3NSR0InIHg9JzAnIHk9JzAnIHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjAwNiAwLjAwNDUnIG51bU9jdGF2ZXM9JzQnIHNlZWQ9JzgnIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9JzAgMCAwIDAgMC43OCAgMCAwIDAgMCAwLjkyICAwIDAgMCAwIDAuNTUgIDIuNCAwIDAgMCAtMS4xMicvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNmKScvPjwvc3ZnPg==");
+      background-size: 911px 911px, 673px 673px;
+      opacity: 0.3;
+    }
+    /* grano fino */
+    .mesa .grano {
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScyMjAnIGhlaWdodD0nMjIwJz48ZmlsdGVyIGlkPSdmJyBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9J3NSR0InIHg9JzAnIHk9JzAnIHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjknIG51bU9jdGF2ZXM9JzInIHNlZWQ9JzUnIHN0aXRjaFRpbGVzPSdzdGl0Y2gnLz48ZmVDb2xvck1hdHJpeCB2YWx1ZXM9JzAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAwIDAgIDAgMCAwIDEuMSAtMC40MicvPjwvZmlsdGVyPjxyZWN0IHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnIGZpbHRlcj0ndXJsKCNmKScvPjwvc3ZnPg==");
+      background-size: 220px 220px;
+      opacity: 0.55;
+    }
+    /* rayones y cortes */
+    .mesa .rayones {
+      background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMTAwJyBoZWlnaHQ9JzExMDAnPjxwYXRoIGQ9J000OTggNjE2TDQyMiA2MzQnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMjQnIHN0cm9rZS13aWR0aD0nMC42JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNTYzIDY5M0w1NDIgNzA5JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjEyJyBzdHJva2Utd2lkdGg9JzEuMScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTc2MyA0Nkw2MTggNTQnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMjUnIHN0cm9rZS13aWR0aD0nMC42JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNMTcgNTgxTDU2IDU4OScgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMScgc3Ryb2tlLXdpZHRoPScwLjknIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J000ODUgOTI3TDQ3OSAxMDI4JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjI2JyBzdHJva2Utd2lkdGg9JzAuOScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTMwNiAxMDk3TDE3OCAxMDk5JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjE4JyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTMxOCA3N0wyNjcgMTIzJyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjE5JyBzdHJva2Utd2lkdGg9JzEuMycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTkzMiAxTDEwNDEgODUnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMzQnIHN0cm9rZS13aWR0aD0nMC44JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNODAgNjkyTDQxIDcyNScgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xOCcgc3Ryb2tlLXdpZHRoPScxLjMnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J004MzQgMTMwTDg1NCAxNDknIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMjknIHN0cm9rZS13aWR0aD0nMC42JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNjE1IDQ5Mkw3MDkgNTU2JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjI1JyBzdHJva2Utd2lkdGg9JzAuNicgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTQ2MyAyMzRMNTU5IDM0NCcgc3Ryb2tlPScjMGIyYTEyJyBzdHJva2Utb3BhY2l0eT0nMC4xNycgc3Ryb2tlLXdpZHRoPScxLjInIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J00yMzIgNDM0TDE0MSA0NzgnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMzQnIHN0cm9rZS13aWR0aD0nMC43JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNMjg0IDg1MEwzMTIgODk3JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjEyJyBzdHJva2Utd2lkdGg9JzEuMCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTI2NyA2NjFMMjk3IDczMScgc3Ryb2tlPScjMGIyYTEyJyBzdHJva2Utb3BhY2l0eT0nMC4yMScgc3Ryb2tlLXdpZHRoPScxLjAnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J005NTMgMjAxTDEwNzUgMjY1JyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjE2JyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTgxMyAxMDM0TDkzMCAxMTE3JyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjIzJyBzdHJva2Utd2lkdGg9JzAuOCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTExNCA0M0w2OCA0OCcgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xNicgc3Ryb2tlLXdpZHRoPScxLjInIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J002NTYgMzIzTDc1MiAzODEnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMTUnIHN0cm9rZS13aWR0aD0nMC45JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNOTM4IDY3NkwxMDI2IDc4Mycgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMCcgc3Ryb2tlLXdpZHRoPScwLjcnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J000OTAgNjdMNTQ1IDEwMCcgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMycgc3Ryb2tlLXdpZHRoPScwLjgnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J005ODAgMTA3OUw5MjkgMTE3NCcgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMycgc3Ryb2tlLXdpZHRoPScwLjUnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J00yMCAxMDAxTC02NiAxMTE4JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjI1JyBzdHJva2Utd2lkdGg9JzAuOScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTgwNCAzNTFMNzc5IDM1MScgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yOCcgc3Ryb2tlLXdpZHRoPScxLjInIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J004MTEgNzc0TDcwMSA4NTgnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMjYnIHN0cm9rZS13aWR0aD0nMS4yJyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNOTU4IDQ1OUw4NTQgNTM5JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjI1JyBzdHJva2Utd2lkdGg9JzAuOCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTY0MSA2NzBMNzM5IDY5NScgc3Ryb2tlPScjMGIyYTEyJyBzdHJva2Utb3BhY2l0eT0nMC4yOCcgc3Ryb2tlLXdpZHRoPScxLjEnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J000MjcgODA5TDQwOSA4ODAnIHN0cm9rZT0nIzBiMmExMicgc3Ryb2tlLW9wYWNpdHk9JzAuMTQnIHN0cm9rZS13aWR0aD0nMS4xJyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNMzMgNjYxTDM1IDcwNycgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yMicgc3Ryb2tlLXdpZHRoPScxLjAnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J00xMDEzIDI4MUwxMDY3IDI4Mycgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xNScgc3Ryb2tlLXdpZHRoPScwLjYnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J005OTYgNzI2TDEwMjEgODU5JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjI2JyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTQ3NCA4ODdMMzQ1IDkyMicgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yNCcgc3Ryb2tlLXdpZHRoPScwLjgnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J00xNTAgNTQ2TDM3IDYwOScgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4zMycgc3Ryb2tlLXdpZHRoPScwLjcnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J00xODYgNDk2TDIxNCA1MjknIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMjUnIHN0cm9rZS13aWR0aD0nMC45JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNMzQ3IDkyM0wyNzEgOTI3JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjExJyBzdHJva2Utd2lkdGg9JzEuMicgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTQ2IDc3OUwzMyA4MzQnIHN0cm9rZT0nIzBiMmExMicgc3Ryb2tlLW9wYWNpdHk9JzAuMTInIHN0cm9rZS13aWR0aD0nMC42JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNTAwIDI3TDQ2MCA1MScgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMScgc3Ryb2tlLXdpZHRoPScxLjAnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J000OTEgNjkzTDQzMyA4MDInIHN0cm9rZT0nIzBiMmExMicgc3Ryb2tlLW9wYWNpdHk9JzAuMjQnIHN0cm9rZS13aWR0aD0nMC43JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNTIzIDE5N0w2MDEgMTk5JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjE0JyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTM4MCA3NjdMMzc0IDg2NCcgc3Ryb2tlPScjMGIyYTEyJyBzdHJva2Utb3BhY2l0eT0nMC4xOScgc3Ryb2tlLXdpZHRoPScxLjEnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J005OTcgOTZMODg3IDEyMCcgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yMScgc3Ryb2tlLXdpZHRoPScxLjAnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J00xMDAxIDQxNEw5NzIgNTQ1JyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjI5JyBzdHJva2Utd2lkdGg9JzAuOScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTcxNiAyMjVMNjM2IDMyMScgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yNycgc3Ryb2tlLXdpZHRoPScwLjcnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J005OTAgMTA3OUw5MDMgMTA4NScgc3Ryb2tlPScjMGIyYTEyJyBzdHJva2Utb3BhY2l0eT0nMC4xOCcgc3Ryb2tlLXdpZHRoPScxLjInIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J005NDEgMzgzTDEwMTMgNDAyJyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjI4JyBzdHJva2Utd2lkdGg9JzAuOScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTMxIDg5MEwxNTIgOTE1JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjE4JyBzdHJva2Utd2lkdGg9JzEuMScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTE1NSAxNjRMMTQ5IDI3Nicgc3Ryb2tlPScjMGIyYTEyJyBzdHJva2Utb3BhY2l0eT0nMC4yNCcgc3Ryb2tlLXdpZHRoPScxLjMnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J001NDIgMTA0NEw1ODQgMTA1Nicgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xNycgc3Ryb2tlLXdpZHRoPScxLjEnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J003MDMgNTc1TDYyMyA2MTgnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMTknIHN0cm9rZS13aWR0aD0nMS4yJyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNOTkxIDIyOUw4NjEgMjk1JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjI0JyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTU4OSA1NTNMNTg0IDU3MCcgc3Ryb2tlPScjMGIyYTEyJyBzdHJva2Utb3BhY2l0eT0nMC4yMScgc3Ryb2tlLXdpZHRoPScwLjgnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J004ODEgNjE5TDg4NCA3MjcnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMjMnIHN0cm9rZS13aWR0aD0nMC44JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNMTA1MyAxMDE2TDExMDUgMTA3NCcgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yMCcgc3Ryb2tlLXdpZHRoPScxLjInIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J005OTEgNTI0TDEwMTIgNTU4JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjMyJyBzdHJva2Utd2lkdGg9JzAuNicgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTg1NyAyNUw4OTQgNTEnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMTgnIHN0cm9rZS13aWR0aD0nMC44JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNjgyIDExNUw2NjEgMTM4JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjE2JyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTU4MyA0ODBMNjEwIDU0NScgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xNCcgc3Ryb2tlLXdpZHRoPScwLjcnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J002OTQgNzAyTDY4MiA4MzInIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMzEnIHN0cm9rZS13aWR0aD0nMC43JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNODE1IDg5Mkw3NjEgOTA5JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjMyJyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTEwOTggOTc2TDExNDEgOTk1JyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjE3JyBzdHJva2Utd2lkdGg9JzAuNicgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTkxNSA0NjRMODkxIDQ4Mycgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yNicgc3Ryb2tlLXdpZHRoPScwLjUnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J00yMjEgNzUxTDgxIDc5MScgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yMicgc3Ryb2tlLXdpZHRoPScxLjEnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J001NTMgNzU0TDU3MyA3NjcnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMTEnIHN0cm9rZS13aWR0aD0nMC45JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNTY2IDYyNkw2MDEgNjQzJyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjMwJyBzdHJva2Utd2lkdGg9JzEuMycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTEwMjAgMTA1TDExNjAgMTMzJyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjI4JyBzdHJva2Utd2lkdGg9JzAuOCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTUxNCA1NjdMNTM1IDY2MCcgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yNycgc3Ryb2tlLXdpZHRoPScxLjInIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J00xOTkgNDk5TDE1MiA1NTAnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMTQnIHN0cm9rZS13aWR0aD0nMC45JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNMTcgOTgzTC03MiAxMDQ3JyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjIzJyBzdHJva2Utd2lkdGg9JzAuOCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTY2MCA1NTVMNTM2IDU2MScgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4zMicgc3Ryb2tlLXdpZHRoPScxLjEnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J004NTYgODk2TDg5NSAxMDI2JyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjI1JyBzdHJva2Utd2lkdGg9JzEuMScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTg0MiA0NDZMODI3IDQ2NCcgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yMScgc3Ryb2tlLXdpZHRoPScwLjUnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J00zOTEgNzAzTDM3NCA3NDUnIHN0cm9rZT0nIzBiMmExMicgc3Ryb2tlLW9wYWNpdHk9JzAuMjQnIHN0cm9rZS13aWR0aD0nMC44JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNzI2IDYyN0w3MTkgNjkzJyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjI0JyBzdHJva2Utd2lkdGg9JzEuMScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTgzOCAxMDc4TDkzNSAxMDg1JyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjE3JyBzdHJva2Utd2lkdGg9JzAuOCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTU2IDIxNUw2NiAyNDAnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMzInIHN0cm9rZS13aWR0aD0nMC45JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNTU5IDEwNjRMNTI3IDEyMTAnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMjknIHN0cm9rZS13aWR0aD0nMC42JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNjU3IDgzNUw3OTYgODU1JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjIxJyBzdHJva2Utd2lkdGg9JzAuNicgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTU0NSA2NzJMNjg1IDY5OCcgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yMycgc3Ryb2tlLXdpZHRoPScxLjAnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J000MDIgMzE0TDM2MCAzOTQnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMjcnIHN0cm9rZS13aWR0aD0nMC43JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNMTUgMjcwTDUwIDI3NCcgc3Ryb2tlPScjMGIyYTEyJyBzdHJva2Utb3BhY2l0eT0nMC4xOScgc3Ryb2tlLXdpZHRoPScxLjInIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J004MjMgNTVMNjgxIDYwJyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjMyJyBzdHJva2Utd2lkdGg9JzAuOCcgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTUyNSAxMDcwTDU4NyAxMTMwJyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjI1JyBzdHJva2Utd2lkdGg9JzAuOScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTEwNzcgODk4TDEwNjcgOTI2JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjIxJyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTU3IDU4MUwxMjYgNjA5JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjIxJyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTY0MCA0NjFMNTc0IDUxNycgc3Ryb2tlPScjMGIyYTEyJyBzdHJva2Utb3BhY2l0eT0nMC4yOScgc3Ryb2tlLXdpZHRoPScxLjEnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J00yNjIgMTI1TDE0OCAxNjUnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMTknIHN0cm9rZS13aWR0aD0nMC43JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNzU0IDYyMUw3MjUgNzE3JyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjE1JyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTEwNzggMTAwN0wxMDYwIDEwMTQnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMTcnIHN0cm9rZS13aWR0aD0nMC44JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNNjg2IDExM0w2ODMgMTM2JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjI2JyBzdHJva2Utd2lkdGg9JzAuOScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTY5NCA0MTFMNjk3IDQ1Mycgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4yOCcgc3Ryb2tlLXdpZHRoPScxLjInIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcvPjxwYXRoIGQ9J004MiAxMzJMMCAxODgnIHN0cm9rZT0nIzBiMmExMicgc3Ryb2tlLW9wYWNpdHk9JzAuMTYnIHN0cm9rZS13aWR0aD0nMC44JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNMjg0IDg5MUwzMjUgOTg1JyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjE4JyBzdHJva2Utd2lkdGg9JzAuOScgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTgyMSAxMDEzTDgzNSAxMDc1JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjMxJyBzdHJva2Utd2lkdGg9JzAuNicgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTkxIDYyMUw5NiA3MjgnIHN0cm9rZT0nI2ZmZjdjZicgc3Ryb2tlLW9wYWNpdHk9JzAuMjknIHN0cm9rZS13aWR0aD0nMC42JyBzdHJva2UtbGluZWNhcD0ncm91bmQnLz48cGF0aCBkPSdNMjM1IDcyOEwyODggNzQyJyBzdHJva2U9JyMwYjJhMTInIHN0cm9rZS1vcGFjaXR5PScwLjI0JyBzdHJva2Utd2lkdGg9JzAuNycgc3Ryb2tlLWxpbmVjYXA9J3JvdW5kJy8+PHBhdGggZD0nTTE1NyAzOTRMMTgxIDc1MScgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMycgc3Ryb2tlLXdpZHRoPScwLjknLz48cGF0aCBkPSdNNzgwIDYyNkw4MDIgMTMyNycgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMycgc3Ryb2tlLXdpZHRoPScwLjknLz48cGF0aCBkPSdNMzM1IDM0OUwxODEgOTk2JyBzdHJva2U9JyNmZmY3Y2YnIHN0cm9rZS1vcGFjaXR5PScwLjEzJyBzdHJva2Utd2lkdGg9JzAuOScvPjxwYXRoIGQ9J001NjggOTNMNzE4IDcxMycgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMycgc3Ryb2tlLXdpZHRoPScwLjknLz48cGF0aCBkPSdNNjQzIDg3Nkw1NTkgMTQ0MCcgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMycgc3Ryb2tlLXdpZHRoPScwLjknLz48cGF0aCBkPSdNOTIwIDYxOUwxNDM2IDUxMicgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMycgc3Ryb2tlLXdpZHRoPScwLjknLz48cGF0aCBkPSdNOTQwIDg5M0wxNTEyIDg5OCcgc3Ryb2tlPScjZmZmN2NmJyBzdHJva2Utb3BhY2l0eT0nMC4xMycgc3Ryb2tlLXdpZHRoPScwLjknLz48L3N2Zz4=");
+      background-size: 1100px 1100px;
+    }
+    /* cuadrícula crema, con desgaste (se borra un poco en algunas zonas) */
+    .mesa .cuadricula {
+      background-image:
+        linear-gradient(rgba(var(--mesa-linea), 0.85) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(var(--mesa-linea), 0.85) 2px, transparent 2px),
+        linear-gradient(rgba(var(--mesa-linea), 0.4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(var(--mesa-linea), 0.4) 1px, transparent 1px);
+      background-size: var(--g) var(--g), var(--g) var(--g), calc(var(--g) / 4) calc(var(--g) / 4), calc(var(--g) / 4) calc(var(--g) / 4);
+      -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2NDAnIGhlaWdodD0nNjQwJz48ZmlsdGVyIGlkPSdmJyBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9J3NSR0InIHg9JzAnIHk9JzAnIHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjAzJyBudW1PY3RhdmVzPSc1JyBzZWVkPSc5JyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPScwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAzLjQgLTAuNjInLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCgjZiknLz48L3N2Zz4=");
+      mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPSc2NDAnIGhlaWdodD0nNjQwJz48ZmlsdGVyIGlkPSdmJyBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9J3NSR0InIHg9JzAnIHk9JzAnIHdpZHRoPScxMDAlJyBoZWlnaHQ9JzEwMCUnPjxmZVR1cmJ1bGVuY2UgdHlwZT0nZnJhY3RhbE5vaXNlJyBiYXNlRnJlcXVlbmN5PScwLjAzJyBudW1PY3RhdmVzPSc1JyBzZWVkPSc5JyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPScwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAzLjQgLTAuNjInLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCgjZiknLz48L3N2Zz4=");
+      -webkit-mask-size: 640px 640px;
+      mask-size: 640px 640px;
+    }
+    /* numeración de los bordes, como en una mesa de corte de verdad */
+    .mesa .nums span {
+      position: absolute;
+      font: 600 11px/1 system-ui, -apple-system, sans-serif;
+      color: rgba(var(--mesa-linea), 0.78);
+      letter-spacing: 0.04em;
+    }
+    .mesa .nums span.d { text-align: right; }
+    /* luz de ventana desde arriba a la izquierda + viñeta en los bordes */
+    .mesa .luz {
+      background:
+        radial-gradient(ellipse at 24% 14%, rgba(255, 255, 225, 0.12) 0%, rgba(255, 255, 225, 0) 52%),
+        radial-gradient(ellipse at 50% 50%, rgba(0, 0, 0, 0) 58%, rgba(0, 0, 0, 0.28) 100%);
+    }
+
+    /* Objetos de papelería: la sombra va en el contenedor para que siempre caiga hacia el mismo lado */
+    .obj {
+      position: absolute;
+      width: calc(var(--w) * max(1vmin, 0.55vmax));
+      filter: drop-shadow(1px 2px 1px rgba(0, 0, 0, 0.5)) drop-shadow(6px 11px 8px rgba(0, 0, 0, 0.32));
+    }
+    .obj svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+      transform: rotate(var(--r, 0deg));
     }
 
     /* Escenario principal */
@@ -38,6 +118,7 @@
       align-items: center;
       overflow: hidden;
       position: relative;
+      z-index: 1; /* por encima de la mesa de corte */
       touch-action: none; /* los gestos (pellizcar, arrastrar, deslizar) los maneja el script */
     }
 
@@ -84,7 +165,7 @@
       opacity: 0;
       transition: opacity 0.3s ease; /* al cerrar el libro desaparece de inmediato */
       box-shadow:
-        0 22px 40px rgba(0, 0, 0, 0.6),
+        0 10px 24px rgba(0, 0, 0, 0.5),
         -4px 0 0 -1px #e5e5e5,
         -5px 0 0 -1px #888888,
         4px 0 0 -1px #e5e5e5,
@@ -227,7 +308,7 @@
     /* Sombra suave solo en portada y contraportada (una sola, no una por hoja) */
     .sheet.is-cover .face.front,
     .sheet.is-backcover .face.back {
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
     }
 
     /* Barra de controles inferior */
@@ -250,9 +331,10 @@
     }
 
     .btn {
-      background-color: #ffffff1f;
+      /* botones oscuros y translúcidos: se leen bien sobre cualquier fondo, claro u oscuro */
+      background-color: rgba(15, 25, 45, 0.72);
       color: #ffffff;
-      border: 1px solid #ffffff35;
+      border: 1px solid rgba(255, 255, 255, 0.28);
       padding: 8px 16px;
       border-radius: 8px;
       cursor: pointer;
@@ -262,7 +344,7 @@
       transition: background-color 0.2s ease;
     }
     .btn:hover {
-      background-color: #ffffff38;
+      background-color: rgba(15, 25, 45, 0.92);
     }
     .btn:disabled {
       opacity: 0.35;
@@ -274,7 +356,10 @@
     }
 
     .page-info {
-      color: #e0e0e0;
+      color: #ffffff;
+      background: rgba(15, 25, 45, 0.72);
+      border-radius: 8px;
+      padding: 8px 12px;
       font-size: 14px;
       min-width: 145px;
       text-align: center;
@@ -284,7 +369,10 @@
       display: none;
       width: 100%;
       text-align: center;
-      color: #9a9a9a;
+      color: #e4ebf5;
+      background: rgba(15, 25, 45, 0.72);
+      border-radius: 8px;
+      padding: 6px 10px;
       font-size: 12px;
     }
 
@@ -310,6 +398,209 @@
   </style>
 </head>
 <body>
+
+  <!-- Mesa de corte decorativa (no interfiere con el libro ni con los botones) -->
+  <div class="mesa" aria-hidden="true">
+    <div class="capa manchas"></div>
+    <div class="capa grano"></div>
+    <div class="capa rayones"></div>
+    <div class="capa cuadricula"></div>
+    <div class="capa nums"></div>
+    <div class="capa luz"></div>
+    <div class="obj" style="left:-5%; top:1%; --w:38; --r:28deg; --c1:#f6c744"><svg viewBox="0 0 232 28"><use href="#lapiz"/></svg></div>
+    <div class="obj" style="left:0.5%; top:19%; --w:30; --r:-14deg; --c1:#fff04d; --c2:#c9b800"><svg viewBox="0 0 220 46"><use href="#resaltador"/></svg></div>
+    <div class="obj" style="left:-2%; top:44%; --w:19; --r:74deg; --c1:#ffa8c0"><svg viewBox="0 0 132 26"><use href="#washiRayas"/></svg></div>
+    <div class="obj" style="left:3.5%; top:33%; --w:9; --r:12deg; --c1:#f4f1e4"><svg viewBox="0 0 100 100"><use href="#estrella"/></svg></div>
+    <div class="obj" style="left:12%; top:27%; --w:4.2; --r:32deg"><svg viewBox="0 0 50 110"><use href="#clip"/></svg></div>
+    <div class="obj" style="left:-1%; top:56%; --w:12; --r:24deg"><svg viewBox="0 0 100 90"><use href="#pinza"/></svg></div>
+    <div class="obj" style="left:3%; bottom:20%; --w:34; --r:-36deg; --c1:#e5483f"><svg viewBox="0 0 232 28"><use href="#lapiz"/></svg></div>
+    <div class="obj" style="left:-3%; bottom:4%; --w:29; --r:16deg; --c1:#ff7ab8; --c2:#cc3f86"><svg viewBox="0 0 220 46"><use href="#resaltador"/></svg></div>
+    <div class="obj" style="left:15%; bottom:3.5%; --w:11; --r:-14deg; --c1:#2f6fd0"><svg viewBox="0 0 80 38"><use href="#borrador"/></svg></div>
+    <div class="obj" style="left:30%; top:-0.5%; --w:40; --r:-1.2deg"><svg viewBox="0 0 620 70"><use href="#regla"/></svg></div>
+    <div class="obj" style="right:3%; top:5%; --w:17; --r:7deg"><svg viewBox="0 0 90 90"><use href="#postit"/></svg></div>
+    <div class="obj" style="right:-3%; top:26%; --w:30; --r:22deg; --c1:#ffab40; --c2:#cf7a0c"><svg viewBox="0 0 220 46"><use href="#resaltador"/></svg></div>
+    <div class="obj" style="right:14%; top:17%; --w:7.5; --r:-10deg; --c1:#fff0a8"><svg viewBox="0 0 100 100"><use href="#estrella"/></svg></div>
+    <div class="obj" style="right:-6%; top:45%; --w:34; --r:-58deg; --c1:#2f78d6"><svg viewBox="0 0 232 28"><use href="#lapiz"/></svg></div>
+    <div class="obj" style="right:1%; bottom:25%; --w:21; --r:-20deg; --c1:#6ec0f0"><svg viewBox="0 0 132 26"><use href="#washiPuntos"/></svg></div>
+    <div class="obj" style="right:11%; bottom:27%; --w:4.2; --r:-24deg"><svg viewBox="0 0 50 110"><use href="#clip"/></svg></div>
+    <div class="obj" style="right:5%; bottom:12%; --w:11; --r:18deg; --c1:#ffd23f"><svg viewBox="0 0 64 38"><use href="#sacapuntas"/></svg></div>
+    <div class="obj" style="right:-4%; bottom:3%; --w:32; --r:-25deg; --c1:#ff8c2e"><svg viewBox="0 0 232 28"><use href="#lapiz"/></svg></div>
+    <div class="obj" style="right:17%; bottom:4%; --w:6.5; --r:20deg; --c1:#f4f1e4"><svg viewBox="0 0 100 100"><use href="#estrella"/></svg></div>
+  </div>
+
+  <!-- Definiciones de los objetos (no se ven por sí solas) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="gCil" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#fff" stop-opacity=".6"/>
+        <stop offset=".2" stop-color="#fff" stop-opacity=".22"/>
+        <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+        <stop offset=".78" stop-color="#000" stop-opacity=".16"/>
+        <stop offset="1" stop-color="#000" stop-opacity=".5"/>
+      </linearGradient>
+      <linearGradient id="gMetal" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#7d838c"/><stop offset=".22" stop-color="#e6eaee"/>
+        <stop offset=".38" stop-color="#fbfcfd"/><stop offset=".6" stop-color="#aeb4bd"/>
+        <stop offset=".85" stop-color="#6a7078"/><stop offset="1" stop-color="#9aa0a8"/>
+      </linearGradient>
+      <linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#f6dcae"/><stop offset=".5" stop-color="#e9c48c"/><stop offset="1" stop-color="#c99a5e"/>
+      </linearGradient>
+      <linearGradient id="gGraf" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#7a7c82"/><stop offset="1" stop-color="#1d1e20"/>
+      </linearGradient>
+      <linearGradient id="gGoma" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#ffc2cd"/><stop offset=".5" stop-color="#f58fa5"/><stop offset="1" stop-color="#d4657e"/>
+      </linearGradient>
+      <linearGradient id="gPapel" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff07f"/><stop offset="1" stop-color="#ffd84d"/>
+      </linearGradient>
+      <linearGradient id="gVidrio" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset=".5" stop-color="#fff" stop-opacity=".16"/>
+        <stop offset="1" stop-color="#fff" stop-opacity=".3"/>
+      </linearGradient>
+      <linearGradient id="gBrillo" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#fff" stop-opacity=".4"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/>
+        <stop offset="1" stop-color="#000" stop-opacity=".3"/>
+      </linearGradient>
+      <pattern id="rayas" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="7" height="14" fill="rgba(255,255,255,.5)"/>
+      </pattern>
+      <pattern id="puntos" width="12" height="12" patternUnits="userSpaceOnUse">
+        <circle cx="6" cy="6" r="2.2" fill="rgba(255,255,255,.85)"/>
+      </pattern>
+      <pattern id="tMm" width="2" height="80" patternUnits="userSpaceOnUse"><rect width=".5" height="6" fill="#fff" opacity=".85"/></pattern>
+      <pattern id="t5" width="10" height="80" patternUnits="userSpaceOnUse"><rect width=".8" height="10" fill="#fff" opacity=".95"/></pattern>
+      <pattern id="tCm" width="20" height="80" patternUnits="userSpaceOnUse"><rect width="1.1" height="16" fill="#fff"/></pattern>
+      <filter id="rasgado" x="-12%" y="-12%" width="124%" height="124%">
+        <feTurbulence type="fractalNoise" baseFrequency=".07" numOctaves="2" seed="4" result="n"/>
+        <feDisplacementMap in="SourceGraphic" in2="n" scale="5"/>
+      </filter>
+
+      <!-- Lápiz hexagonal con madera, mina, texto, virola y goma (viewBox 0 0 232 28) -->
+      <g id="lapiz">
+        <polygon points="46,2 46,26 13,16.5 13,11.5" fill="url(#gWood)"/>
+        <path d="M46 8 L19 12.4 M46 14 L16 14 M46 20 L19 15.6" stroke="rgba(120,70,20,.28)" stroke-width=".7" fill="none"/>
+        <polygon points="46,2 46,26 13,16.5 13,11.5" fill="url(#gCil)"/>
+        <path d="M13 11.5 L5.6 13.4 Q3.6 14 5.6 14.6 L13 16.5 Z" fill="url(#gGraf)"/>
+        <rect x="46" y="2" width="140" height="24" fill="var(--c1)"/>
+        <rect x="46" y="2" width="140" height="7" fill="rgba(255,255,255,.2)"/>
+        <rect x="46" y="9" width="140" height="10" fill="rgba(255,255,255,.07)"/>
+        <rect x="46" y="19" width="140" height="7" fill="rgba(0,0,0,.24)"/>
+        <path d="M46 9 H186 M46 19 H186" stroke="rgba(0,0,0,.28)" stroke-width=".6"/>
+        <text x="66" y="17.2" font-size="7" font-weight="700" font-family="Arial, Helvetica, sans-serif" letter-spacing="1.8" fill="rgba(255,255,255,.88)">ANUARIO · HB</text>
+        <rect x="46" y="2" width="140" height="24" fill="url(#gCil)"/>
+        <rect x="186" y="2" width="24" height="24" fill="url(#gMetal)"/>
+        <path d="M192 2 V26 M198 2 V26 M204 2 V26" stroke="rgba(0,0,0,.35)" stroke-width=".8"/>
+        <path d="M193 2 V26 M199 2 V26 M205 2 V26" stroke="rgba(255,255,255,.55)" stroke-width=".5"/>
+        <path d="M210 3 H224 Q230 3 230 9 V19 Q230 25 224 25 H210 Z" fill="url(#gGoma)"/>
+        <path d="M210 3 H224 Q230 3 230 9 V19 Q230 25 224 25 H210 Z" fill="url(#gCil)"/>
+      </g>
+
+      <!-- Destacador con tapa y etiqueta (viewBox 0 0 220 46) -->
+      <g id="resaltador">
+        <polygon points="6,19 24,15 24,31 6,27" fill="var(--c1)"/>
+        <polygon points="6,19 10,18.2 10,27.8 6,27" fill="rgba(0,0,0,.28)"/>
+        <polygon points="6,19 24,15 24,31 6,27" fill="url(#gCil)"/>
+        <polygon points="24,13 52,9 52,37 24,33" fill="#eceef2"/>
+        <polygon points="24,13 52,9 52,37 24,33" fill="url(#gCil)"/>
+        <rect x="50" y="6" width="118" height="34" rx="4" fill="var(--c1)"/>
+        <rect x="60" y="10" width="76" height="26" rx="3" fill="rgba(255,255,255,.2)"/>
+        <rect x="102" y="15" width="60" height="16" rx="1.5" fill="rgba(255,255,255,.92)"/>
+        <text x="107" y="26" font-size="7.2" font-weight="800" font-family="Arial, Helvetica, sans-serif" letter-spacing="1" fill="var(--c2)">RESALTADOR</text>
+        <rect x="50" y="6" width="118" height="34" rx="4" fill="url(#gCil)"/>
+        <rect x="54" y="10" width="108" height="2" rx="1" fill="rgba(255,255,255,.6)"/>
+        <rect x="166" y="3" width="48" height="40" rx="9" fill="var(--c2)"/>
+        <rect x="178" y="17" width="34" height="12" rx="6" fill="rgba(255,255,255,.2)"/>
+        <rect x="166" y="3" width="48" height="40" rx="9" fill="url(#gCil)"/>
+        <rect x="170" y="7" width="40" height="2" rx="1" fill="rgba(255,255,255,.55)"/>
+        <rect x="166" y="3" width="3" height="40" fill="rgba(0,0,0,.2)"/>
+      </g>
+
+      <!-- Goma de borrar con funda y desgaste (viewBox 0 0 80 38) -->
+      <g id="borrador">
+        <rect x="2" y="3" width="76" height="32" rx="3.5" fill="#f4f5f7"/>
+        <rect x="2" y="3" width="20" height="32" rx="3.5" fill="rgba(70,70,70,.16)"/>
+        <path d="M5 12 l9 3 M6 22 l10 -2 M8 28 l8 1" stroke="rgba(40,40,40,.35)" stroke-width="1.1" stroke-linecap="round"/>
+        <rect x="24" y="3" width="42" height="32" fill="var(--c1)"/>
+        <rect x="24" y="3" width="1.4" height="32" fill="rgba(0,0,0,.3)"/>
+        <rect x="64.6" y="3" width="1.4" height="32" fill="rgba(0,0,0,.3)"/>
+        <text x="45" y="22.4" font-size="6.4" font-weight="800" font-family="Arial, Helvetica, sans-serif" letter-spacing="1" text-anchor="middle" fill="rgba(255,255,255,.92)">BORRADOR</text>
+        <rect x="2" y="3" width="76" height="32" rx="3.5" fill="url(#gCil)"/>
+      </g>
+
+      <!-- Sacapuntas con cuchilla (viewBox 0 0 64 38) -->
+      <g id="sacapuntas">
+        <path d="M2 7 Q2 2 7 2 H57 Q62 2 62 7 V31 Q62 36 57 36 H7 Q2 36 2 31 Z" fill="var(--c1)"/>
+        <circle cx="21" cy="19" r="10" fill="#1b1c1e"/>
+        <circle cx="21" cy="19" r="6" fill="#4a4c50"/>
+        <ellipse cx="19" cy="17" rx="2.2" ry="1.6" fill="rgba(255,255,255,.25)"/>
+        <rect x="38" y="9" width="17" height="20" rx="2" fill="url(#gMetal)"/>
+        <circle cx="44" cy="19" r="2.6" fill="#8d939b"/>
+        <path d="M42.4 19 H45.6" stroke="#3b3f45" stroke-width="1"/>
+        <path d="M2 7 Q2 2 7 2 H57 Q62 2 62 7 V31 Q62 36 57 36 H7 Q2 36 2 31 Z" fill="url(#gCil)"/>
+      </g>
+
+      <!-- Pinza negra tipo "clip" (viewBox 0 0 100 90) -->
+      <g id="pinza">
+        <path d="M30 36 C 18 4, 82 4, 70 36" fill="none" stroke="#9aa0a9" stroke-width="4.2" stroke-linecap="round"/>
+        <path d="M30 36 C 19.6 6.5, 80.4 6.5, 70 36" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="1.3" stroke-linecap="round"/>
+        <path d="M8 40 Q8 35 13 35 H87 Q92 35 92 40 L84 80 Q83 85 78 85 H22 Q17 85 16 80 Z" fill="#1d1f22"/>
+        <path d="M8 40 Q8 35 13 35 H87 Q92 35 92 40 L84 80 Q83 85 78 85 H22 Q17 85 16 80 Z" fill="url(#gBrillo)"/>
+        <rect x="14" y="38" width="72" height="5" rx="2" fill="rgba(255,255,255,.14)"/>
+        <path d="M24 82 H76" stroke="rgba(255,255,255,.18)" stroke-width="1.2"/>
+      </g>
+
+      <!-- Clip de papel metálico (viewBox 0 0 50 110) -->
+      <g id="clip">
+        <path d="M14 70 V22 A10 10 0 0 1 34 22 V84 A14 14 0 0 1 6 84 V34 A18 18 0 0 1 42 34 V76" fill="none" stroke="#9ea4ad" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M14 70 V22 A10 10 0 0 1 34 22 V84 A14 14 0 0 1 6 84 V34 A18 18 0 0 1 42 34 V76" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" transform="translate(-.7 -.7)"/>
+      </g>
+
+      <!-- Nota adhesiva con pliegue y cinta (viewBox 0 0 90 90) -->
+      <g id="postit">
+        <rect x="2" y="2" width="86" height="86" fill="url(#gPapel)"/>
+        <rect x="2" y="2" width="86" height="15" fill="rgba(255,255,255,.2)"/>
+        <path d="M2 17 H88" stroke="rgba(0,0,0,.06)" stroke-width="1"/>
+        <path d="M14 36 q6 -4 12 0 t12 0 t12 0 t12 0 M14 49 q6 -4 12 0 t12 0 t12 0 M14 62 q6 -4 12 0 t12 0" fill="none" stroke="rgba(38,52,98,.72)" stroke-width="2" stroke-linecap="round"/>
+        <polygon points="88,56 56,88 88,88" fill="rgba(0,0,0,.2)"/>
+        <polygon points="88,56 56,88 60,60" fill="#fff3a3"/>
+        <polygon points="88,56 56,88 60,60" fill="rgba(0,0,0,.05)"/>
+        <polygon points="26,-7 66,-9 68,11 28,13 25,3" fill="rgba(255,255,255,.55)" stroke="rgba(255,255,255,.7)" stroke-width=".6"/>
+      </g>
+
+      <!-- Cintas washi con extremos rasgados (viewBox 0 0 132 26) -->
+      <g id="washiRayas">
+        <polygon points="6,1 124,1 130,4 124,7 130,10 124,13 130,16 124,19 130,22 124,25 6,25 0,22 6,19 0,16 6,13 0,10 6,7 0,4" fill="var(--c1)" opacity=".92"/>
+        <polygon points="6,1 124,1 130,4 124,7 130,10 124,13 130,16 124,19 130,22 124,25 6,25 0,22 6,19 0,16 6,13 0,10 6,7 0,4" fill="url(#rayas)"/>
+        <rect x="0" y="1" width="130" height="24" fill="url(#gCil)" opacity=".35"/>
+      </g>
+      <g id="washiPuntos">
+        <polygon points="6,1 124,1 130,4 124,7 130,10 124,13 130,16 124,19 130,22 124,25 6,25 0,22 6,19 0,16 6,13 0,10 6,7 0,4" fill="var(--c1)" opacity=".92"/>
+        <polygon points="6,1 124,1 130,4 124,7 130,10 124,13 130,16 124,19 130,22 124,25 6,25 0,22 6,19 0,16 6,13 0,10 6,7 0,4" fill="url(#puntos)"/>
+        <rect x="0" y="1" width="130" height="24" fill="url(#gCil)" opacity=".35"/>
+      </g>
+
+      <!-- Estrella de papel rasgado y arrugado (viewBox 0 0 100 100) -->
+      <g id="estrella" filter="url(#rasgado)">
+        <path d="M50,4 L61.2,34.6 L93.8,35.8 L68.1,55.9 L77,87.2 L50,69 L23,87.2 L31.9,55.9 L6.2,35.8 L38.8,34.6 Z" fill="var(--c1)"/>
+        <polygon points="50,50 50,4 61.2,34.6" fill="rgba(255,255,255,.55)"/><polygon points="50,50 61.2,34.6 93.8,35.8" fill="rgba(0,0,0,.09)"/><polygon points="50,50 93.8,35.8 68.1,55.9" fill="rgba(255,255,255,.55)"/><polygon points="50,50 68.1,55.9 77,87.2" fill="rgba(0,0,0,.09)"/><polygon points="50,50 77,87.2 50,69" fill="rgba(255,255,255,.55)"/><polygon points="50,50 50,69 23,87.2" fill="rgba(0,0,0,.09)"/><polygon points="50,50 23,87.2 31.9,55.9" fill="rgba(255,255,255,.55)"/><polygon points="50,50 31.9,55.9 6.2,35.8" fill="rgba(0,0,0,.09)"/><polygon points="50,50 6.2,35.8 38.8,34.6" fill="rgba(255,255,255,.55)"/><polygon points="50,50 38.8,34.6 50,4" fill="rgba(0,0,0,.09)"/>
+        <path d="M50,4 L61.2,34.6 L93.8,35.8 L68.1,55.9 L77,87.2 L50,69 L23,87.2 L31.9,55.9 L6.2,35.8 L38.8,34.6 Z" fill="none" stroke="rgba(0,0,0,.12)" stroke-width="1.2"/>
+      </g>
+
+      <!-- Regla transparente de 30 cm (viewBox 0 0 620 70) -->
+      <g id="regla">
+        <rect x="2" y="2" width="616" height="66" rx="4" fill="rgba(255,255,255,.16)"/>
+        <rect x="2" y="2" width="616" height="66" rx="4" fill="url(#gVidrio)"/>
+        <rect x="2" y="2" width="616" height="66" rx="4" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.4"/>
+        <rect x="4" y="3" width="612" height="10" fill="url(#tMm)"/>
+        <rect x="4" y="3" width="612" height="14" fill="url(#t5)"/>
+        <rect x="4" y="3" width="612" height="20" fill="url(#tCm)"/>
+        <text x="20" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">1</text><text x="40" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">2</text><text x="60" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">3</text><text x="80" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">4</text><text x="100" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">5</text><text x="120" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">6</text><text x="140" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">7</text><text x="160" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">8</text><text x="180" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">9</text><text x="200" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">10</text><text x="220" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">11</text><text x="240" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">12</text><text x="260" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">13</text><text x="280" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">14</text><text x="300" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">15</text><text x="320" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">16</text><text x="340" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">17</text><text x="360" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">18</text><text x="380" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">19</text><text x="400" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">20</text><text x="420" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">21</text><text x="440" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">22</text><text x="460" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">23</text><text x="480" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">24</text><text x="500" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">25</text><text x="520" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">26</text><text x="540" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">27</text><text x="560" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">28</text><text x="580" y="38" font-size="9" font-weight="600" text-anchor="middle" fill="rgba(255,255,255,.95)">29</text>
+        <rect x="6" y="64" width="608" height="2" rx="1" fill="rgba(255,255,255,.45)"/>
+      </g>
+    </defs>
+  </svg>
 
   <div class="viewport" id="viewport">
     <div id="zoomContainer">
@@ -666,6 +957,30 @@
         document.addEventListener('webkitfullscreenchange', onFullscreenChange);
       }
     });
+  </script>
+
+  <script>
+    // Cuadrícula y numeración de la mesa: se ajustan al tamaño de la pantalla
+    (function () {
+      const mesa = document.querySelector('.mesa');
+      const nums = mesa && mesa.querySelector('.nums');
+      if (!nums) return;
+      function build() {
+        const w = window.innerWidth, h = window.innerHeight;
+        const g = Math.max(64, Math.round(Math.min(w, h) / 6.4 / 4) * 4); // múltiplo de 4
+        mesa.style.setProperty('--g', g + 'px');
+        let out = '';
+        for (let i = 1; i < Math.ceil(w / g); i++) {
+          out += `<span style="left:${i * g + 5}px;top:6px">${i}</span><span style="left:${i * g + 5}px;bottom:6px">${i}</span>`;
+        }
+        for (let j = 1; j < Math.ceil(h / g); j++) {
+          out += `<span style="top:${j * g + 4}px;left:6px">${j}</span><span class="d" style="top:${j * g + 4}px;right:6px">${j}</span>`;
+        }
+        nums.innerHTML = out;
+      }
+      build();
+      window.addEventListener('resize', build);
+    })();
   </script>
 </body>
 </html>
